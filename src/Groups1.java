@@ -7,14 +7,14 @@ import java.util.LinkedList;
  * Time complexity: O(n) - it visits only once each node
  * Memory complexity: O(n^2) for storing the matrix of relations + additional O(n) for storing the groups
  */
-public class Groups {
+public class Groups1 {
     private boolean[][] M;
     private int n;
     private int[] groups;
     public enum Strategy{DFS,BFS}
     private Strategy strategy;
 
-    public Groups(boolean[][] M, Strategy strategy) {
+    public Groups1(boolean[][] M, Strategy strategy) {
         this.M = M;
         n = M.length;
         groups = new int[n];
@@ -103,6 +103,7 @@ public class Groups {
         test4(strategy);
         test5(strategy);
         test6(strategy);
+        test7(strategy);
         System.out.println();
     }
 
@@ -112,19 +113,25 @@ public class Groups {
     }
     private static void test1(Strategy strategy) {
         boolean[][] M = new boolean[][]{{true}};
-        Groups fn = new Groups(M, strategy);
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test1", 1,fn.countGroups());
     }
 
     private static void test2(Strategy strategy) {
-        boolean[][] M = new boolean[][]{{true, false}, {false, true}};
-        Groups fn = new Groups(M, strategy);
+        boolean[][] M = new boolean[][]{
+                {true, false},
+                {false, true}
+        };
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test2", 2,fn.countGroups());
     }
 
     private static void test3(Strategy strategy) {
-        boolean[][] M = new boolean[][]{{true, false, false}, {false, true, false}, {false, false, true}};
-        Groups fn = new Groups(M, strategy);
+        boolean[][] M = new boolean[][]{
+                {true, false, false},
+                {false, true, false},
+                {false, false, true}};
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test3", 3,fn.countGroups());
     }
 
@@ -134,7 +141,7 @@ public class Groups {
             {false, true, false},
             {false, false, true}
         };
-        Groups fn = new Groups(M, strategy);
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test4", 2,fn.countGroups());
     }
 
@@ -144,7 +151,7 @@ public class Groups {
             {false, true, false},
             {false, false, true}
         };
-        Groups fn = new Groups(M, strategy);
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test5", 1,fn.countGroups());
     }
     private static void test6(Strategy strategy) {
@@ -154,7 +161,18 @@ public class Groups {
             {false, false, true, false},
             {false, false, true, true},
         };
-        Groups fn = new Groups(M, strategy);
+        Groups1 fn = new Groups1(M, strategy);
         assertTest("Test6", 1,fn.countGroups());
+    }
+    private static void test7(Strategy strategy) {
+        boolean[][] M = new boolean[][]{
+                {true, false, true, false, false},
+                {false, true, false, true, false},
+                {false, false, true, false, false},
+                {false, false, false, true, false},
+                {true, false, false, true, true}
+        };
+        Groups1 fn = new Groups1(M, strategy);
+        assertTest("Test7", 1, fn.countGroups());
     }
 }
