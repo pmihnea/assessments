@@ -26,6 +26,7 @@ public class Groups2 {
             if (rootGroup == null) {
                 rootGroup = new GroupWrapper(Sets.newHashSet(root));
                 item2group.put(root, rootGroup);
+                newGroups++;
             }
 
             //root relations need to have the same group as root
@@ -55,8 +56,9 @@ public class Groups2 {
         }).reduce(0L, Long::sum);
 
         //count the groups
-        return item2group.values().stream().map(gw -> gw.group).distinct().count();
-        //return nGroups;
+        long nGroupsV2 = item2group.values().stream().map(gw -> gw.group).distinct().count();
+        if(nGroups != nGroupsV2) throw new IllegalStateException("Groups counting failed!");
+        return nGroups;
     }
 
     public static void main(String[] args) {
