@@ -7,6 +7,15 @@ import com.google.common.collect.Streams;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Counts the groups of connected elements by processing sequentially the relations list, without doing a a DFS or BFS.
+ * It creates more groups and when needed it joins those groups together.
+ * Finally it counts how many distinct groups were left in two ways.
+ * Runtime complexity:
+ *  Time complexity: O(n^2) - it touches each element, and for each element its relations: n*n
+ *  Memory complexity: O(n) - for each element it stores a group wrapper object that stores a set of elements,
+ *  the sets are in the end the final groups, and each element belongs to only one set at a time.
+ */
 public class Groups2 {
     private static class GroupWrapper{
         Set<Long> group;
