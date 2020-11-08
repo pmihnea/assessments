@@ -1,11 +1,11 @@
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Counts the groups of connected elements by processing sequentially the relations list, without doing a a DFS or BFS.
@@ -26,8 +26,11 @@ public class Groups2 {
     }
 
     public long countGroups(List<String> related) {
-        BiMap<Long, GroupWrapper> item2group = HashBiMap.create();
-        Long nGroups = Streams.mapWithIndex(related.stream(), (rootRelations, root) -> {
+        return countGroups(related.stream());
+    }
+    public long countGroups(Stream<String> related) {
+        Map<Long, GroupWrapper> item2group = new HashMap<>();
+        Long nGroups = Streams.mapWithIndex(related, (rootRelations, root) -> {
             long newGroups = 0;
 
             //initialize root group if it doesn't exist yet
