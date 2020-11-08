@@ -1,11 +1,6 @@
-import com.google.common.collect.Sets;
-import com.google.common.collect.Streams;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.LongSupplier;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -28,32 +23,34 @@ import java.util.stream.Stream;
  */
 public class Groups2 {
     private static class GroupWrapper{
-        Set<Long> group;
+        Set<Integer> group;
 
-        public GroupWrapper(Set<Long> group) {
+        public GroupWrapper(Set<Integer> group) {
             this.group = group;
         }
     }
 
-    public long countGroups(List<String> related) {
+    public int countGroups(List<String> related) {
         return countGroups(related.stream());
     }
-    public long countGroups(Stream<String> related) {
-        Map<Long, GroupWrapper> item2group = new HashMap<>();
-        Long nGroups = Streams.mapWithIndex(related, (rootRelations, root) -> {
-            long newGroups = 0;
+    public int countGroups(Stream<String> related) {
+        Map<Integer, GroupWrapper> item2group = new HashMap<>();
+        AtomicInteger rootWrapper= new AtomicInteger(-1);
+        Integer nGroups = related.map(rootRelations -> {
+            int root = rootWrapper.addAndGet(1);
+            int newGroups = 0;
 
             //initialize root group if it doesn't exist yet
             GroupWrapper rootGroup = item2group.get(root);
             if (rootGroup == null) {
-                rootGroup = new GroupWrapper(Sets.newLinkedHashSet());
+                rootGroup = new GroupWrapper(new LinkedHashSet());
                 rootGroup.group.add(root);
                 item2group.put(root, rootGroup);
                 newGroups++;
             }
 
             //root relations need to have the same group as root
-            for (long relation = 0; relation < rootRelations.length(); relation++) {
+            for (int relation = 0; relation < rootRelations.length(); relation++) {
                 if (rootRelations.charAt((int) relation) == '1') {
                     GroupWrapper relationGroup = item2group.get(relation);
                     if (relationGroup == null) {
@@ -62,7 +59,7 @@ public class Groups2 {
                         item2group.put(relation, relationGroup);
                     } else if(relationGroup.group != rootGroup.group){
                         rootGroup.group.addAll(relationGroup.group);
-                        for (Long item : relationGroup.group) {
+                        for (Integer item : relationGroup.group) {
                             GroupWrapper itemGroup = item2group.get(item);
                             if(itemGroup == null){
                                 itemGroup = new GroupWrapper(rootGroup.group);
@@ -76,10 +73,10 @@ public class Groups2 {
                 }
             }
             return newGroups;
-        }).reduce(0L, Long::sum);
+        }).reduce(0, Integer::sum);
 
         //count the groups
-        //long nGroupsV2 = item2group.values().stream().map(gw -> gw.group).distinct().count();
+        //int nGroupsV2 = item2group.values().stream().map(gw -> gw.group).distinct().count();
         //if(nGroups != nGroupsV2) throw new IllegalStateException("Groups counting failed!");
         return nGroups;
     }
@@ -101,9 +98,9 @@ public class Groups2 {
         System.out.println();
     }
 
-    private static void assertTest(String test, long expected, LongSupplier actualSupplier) {
+    private static void assertTest(String test, int expected, IntSupplier actualSupplier) {
         long start = System.currentTimeMillis();
-        long actual = actualSupplier.getAsLong();
+        int actual = actualSupplier.getAsInt();
         long end = System.currentTimeMillis();
         System.out.println(test + " is " + (expected == actual ? "OK " : "NOK")
                 + " # expected = "+ expected + " # actual = " + actual
