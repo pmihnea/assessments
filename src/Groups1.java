@@ -5,7 +5,7 @@ import java.util.LinkedList;
  * Counting the groups of connected elements in a not directed graph.
  * n - number of elements
  * Time complexity: O(n) - it visits only once each node
- * Memory complexity: O(n^2) for storing the matrix of relations + additional O(n) for storing the groups
+ * Memory complexity: O(n^2) for storing the matrix of relations + additional O(n) for storing the groups -> O(n^2)
  */
 public class Groups1 {
     private boolean[][] M;
