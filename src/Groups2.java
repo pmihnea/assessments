@@ -7,11 +7,11 @@ import java.util.stream.Stream;
 /**
  * Counts the groups of connected elements by processing sequentially the relations list, without doing a DFS or BFS.
  * It creates more groups and when needed it joins those groups together.
- * Finally it counts how many distinct groups were left.
- * Runtime complexity:
- *  Time complexity: O(n^2) - it touches each element, and for each element all its relations: n*n
+ * Finally it counts how many distinct groups were left. <br>
+ * Runtime complexity: <br>
+ *  Time complexity: O(n^2) - it touches each element, and for each element all its relations: n*n <br>
  *  Memory complexity: O(n) - for each element it stores a group wrapper object that stores a set of elements,
- *  the sets are in the end the final groups, and each element belongs to only one set at a time.
+ *  the sets are in the end the final groups, and each element belongs to only one set at a time. <br>
  *  Compared with the DFS/BFS based solution, this one favors the memory complexity over the time complexity.
  *  A test with 10e4 and 10e5 elements runs in approx 0.7[s] and respectively 75[s] using 390MB of memory,
  *  but a DFS/BFS based solution runs the same tests with 10e4 elements in 0.8[s],
