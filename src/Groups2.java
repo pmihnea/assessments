@@ -30,6 +30,10 @@ public class Groups2 {
         }
     }
 
+    /**
+     * related[i] = "010010101..." - means that the elem "i" is related with all elements "j" that
+     * represent an index of the character '1' in the given string value
+     */
     public int countGroups(List<String> related) {
         return countGroups(related.stream());
     }
@@ -43,21 +47,22 @@ public class Groups2 {
             //initialize root group if it doesn't exist yet
             GroupWrapper rootGroup = item2group.get(root);
             if (rootGroup == null) {
-                rootGroup = new GroupWrapper(new LinkedHashSet());
+                rootGroup = new GroupWrapper(new HashSet());
                 rootGroup.group.add(root);
                 item2group.put(root, rootGroup);
-                newGroups++;
+                newGroups++; // a new group was created
             }
 
             //root relations need to have the same group as root
             for (int relation = 0; relation < rootRelations.length(); relation++) {
-                if (rootRelations.charAt((int) relation) == '1') {
+                if (rootRelations.charAt(relation) == '1') {
                     GroupWrapper relationGroup = item2group.get(relation);
                     if (relationGroup == null) {
                         rootGroup.group.add(relation);
                         relationGroup = new GroupWrapper(rootGroup.group);
                         item2group.put(relation, relationGroup);
                     } else if(relationGroup.group != rootGroup.group){
+                        // merge the groups into one
                         rootGroup.group.addAll(relationGroup.group);
                         for (Integer item : relationGroup.group) {
                             GroupWrapper itemGroup = item2group.get(item);
@@ -68,7 +73,7 @@ public class Groups2 {
                                 itemGroup.group = rootGroup.group;
                             }
                         }
-                        newGroups--;
+                        newGroups--; // two groups were merged into one
                     }
                 }
             }
