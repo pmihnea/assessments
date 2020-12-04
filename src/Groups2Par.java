@@ -12,27 +12,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Counts the groups of connected elements by processing sequentially the relations list, without doing a DFS or BFS.
- * It creates more groups and when needed it joins those groups together.
- * Finally it counts how many distinct groups were left. <br>
- * Runtime complexity: <br>
- * Time complexity: O(n^2) - it touches each element, and for each element all its relations: n*n <br>
- * Memory complexity: O(n) - for each element it stores a group wrapper object that stores a set of elements,
- * the sets are in the end the final groups, and each element belongs to only one set at a time. <br>
- * Compared with the DFS/BFS based solution, this one favors the memory complexity over the time complexity.
- * A test with 10e4 and 10e5 elements runs in approx 0.7[s] and respectively 75[s] using 390MB of memory,
- * but a DFS/BFS based solution runs the same tests with 10e4 elements in 0.8[s],
- * but the one with 10e5 elements requires 10GB for the boolean matrix or 1.3GB for a BitSet based matrix,
- * and it it runs in 430[s], respectively 300[s].
- * <p>
- * Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 685
- * Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 74534
+ * Counts the groups of connected elements by processing in parallel the relations list, without doing a DFS or BFS.
  */
 public class Groups2Par {
     /**
      * related[i] = "010010101..." - means that the elem "i" is related with all elements "j" that
      * represent an index of the character '1' in the given string value
      */
+
+    public enum Strategy {V1,V2}
+
+    public Groups2Par(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    private Strategy strategy;
 
     public static class Node {
         public int nodeId;
@@ -41,6 +35,14 @@ public class Groups2Par {
         public Node(int nodeId, String rootRelations) {
             this.nodeId = nodeId;
             this.nodeRelations = rootRelations;
+        }
+    }
+
+    public int countNodeGroups(Stream<Node> relatedStream) {
+        switch (strategy){
+            case V1: return countNodeGroups_v1(relatedStream);
+            case V2: return countNodeGroups_v2(relatedStream);
+            default: throw new IllegalStateException("Invalid strategy");
         }
     }
 
@@ -121,6 +123,7 @@ public class Groups2Par {
 
     private BiConsumer<HashMap<Integer, HashSet<Integer>>, HashSet<Integer>> getAccumulator_v1() {
         return (item2group, group) -> {
+            //System.out.println("Groups2Par.getAccumulator_v1");
             HashSet<Integer> mergedGroup = new HashSet<>(group);// could we reuse an existing set?
             for (Integer relation : group) {
                 HashSet<Integer> relationGroup = item2group.get(relation);
@@ -140,6 +143,7 @@ public class Groups2Par {
 
     private BiConsumer<HashMap<Integer, HashSet<Integer>>, HashMap<Integer, HashSet<Integer>>> getCombiner_v1() {
         return (item2group1, item2group2) -> {
+            //System.out.println("Groups2Par.getCombiner_v1");
             final BiConsumer<HashMap<Integer, HashSet<Integer>>, HashSet<Integer>> accumulator = getAccumulator_v1();
             final HashSet<Integer> groupsMerged = new HashSet<>(item2group2.size());
             item2group2.values().forEach(group -> {
@@ -152,21 +156,23 @@ public class Groups2Par {
     }
 
     public static void main(String[] args) {
-        runTests(false);
-        runTests(true);
+        runTests(false, Strategy.V1);
+        runTests(true, Strategy.V1);
+        runTests(false, Strategy.V2);
+        runTests(true, Strategy.V2);
     }
 
-    private static void runTests(boolean parallel) {
+    private static void runTests(boolean parallel, Strategy strategy) {
 
-        test1(parallel);
-        test2(parallel);
-        test3(parallel);
-        test4(parallel);
-        test5(parallel);
-        test6(parallel);
-        test7(parallel);
-        test8(10000, parallel);
-        test8(100000, parallel);
+        test1(parallel, strategy);
+        test2(parallel, strategy);
+        test3(parallel, strategy);
+        test4(parallel, strategy);
+        test5(parallel, strategy);
+        test6(parallel, strategy);
+        test7(parallel, strategy);
+        test8(10000, parallel, strategy);
+        //test8(100000, parallel, strategy);
         System.out.println();
     }
 
@@ -186,65 +192,65 @@ public class Groups2Par {
         return parallel ? nodes.parallelStream() : nodes.stream();
     }
 
-    private static void test1(boolean parallel) {
+    private static void test1(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "1"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test1", 1, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test1", 1, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test2(boolean parallel) {
+    private static void test2(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "10",
                 "01"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test2", 2, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test2", 2, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test3(boolean parallel) {
+    private static void test3(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "100",
                 "010",
                 "001"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test3", 3, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test3", 3, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test4(boolean parallel) {
+    private static void test4(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "110",
                 "010",
                 "001"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test4", 2, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test4", 2, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test5(boolean parallel) {
+    private static void test5(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "111",
                 "010",
                 "001"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test5", 1, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test5", 1, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test6(boolean parallel) {
+    private static void test6(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "1110",
                 "0101",
                 "0010",
                 "0011"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test6", 1, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test6", 1, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
-    private static void test7(boolean parallel) {
+    private static void test7(boolean parallel, Strategy strategy) {
         List<String> related = List.of(
                 "10100",
                 "01010",
@@ -252,8 +258,8 @@ public class Groups2Par {
                 "00010",
                 "10011"
         );
-        Groups2Par fn = new Groups2Par();
-        assertTest("Test7", 1, () -> fn.countNodeGroups_v1(toNodeStream(related, parallel)), parallel);
+        Groups2Par fn = new Groups2Par(strategy);
+        assertTest("Test7", 1, () -> fn.countNodeGroups(toNodeStream(related, parallel)), parallel);
     }
 
     /*
@@ -261,7 +267,7 @@ public class Groups2Par {
     Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 74534
     all using 390MB
      */
-    private static void test8(int N, boolean parallel) {
+    private static void test8(int N, boolean parallel, Strategy strategy) {
         Stream<Node> related = Stream.generate(new Supplier<Node>() {
             AtomicInteger anInt = new AtomicInteger(-1);
 
@@ -276,8 +282,8 @@ public class Groups2Par {
                 return new Node(row, new String(value));
             }
         }).limit(N);
-        Groups2Par fn = new Groups2Par();
+        Groups2Par fn = new Groups2Par(strategy);
         assertTest("Test8-" + N, 10,
-                () -> fn.countNodeGroups_v1(parallel ? related.parallel() : related), parallel);
+                () -> fn.countNodeGroups(parallel ? related.parallel() : related), parallel);
     }
 }

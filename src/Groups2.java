@@ -75,8 +75,8 @@ public class Groups2 {
         }).reduce(0, Integer::sum);
 
         //count the groups
-        //int nGroupsV2 = item2group.values().stream().map(gw -> gw.group).distinct().count();
-        //if(nGroups != nGroupsV2) throw new IllegalStateException("Groups counting failed!");
+        int nGroupsV2 = (int) item2group.values().stream().mapToInt(gw -> System.identityHashCode(gw.group)).distinct().count();
+        if(nGroups != nGroupsV2) throw new IllegalStateException("Groups counting failed!");
         return nGroups;
     }
 
@@ -190,12 +190,12 @@ public class Groups2 {
             public String get() {
                 row++;
                 for (int j = 0; j < N; j++) {
-                    value[j] = (row + j) % 2 == 0 ? '1' : '0';
+                    value[j] = (row - j) % 10 == 0 ? '1' : '0';
                 }
                 return new String(value);
             }
         }).limit(N);
         Groups2 fn = new Groups2();
-        assertTest("Test8-" + N, 2, () -> fn.countGroups(related));
+        assertTest("Test8-" + N, 10, () -> fn.countGroups(related));
     }
 }
