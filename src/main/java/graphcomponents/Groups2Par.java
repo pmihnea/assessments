@@ -1,3 +1,5 @@
+package graphcomponents;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -123,7 +125,7 @@ public class Groups2Par {
 
     private BiConsumer<HashMap<Integer, HashSet<Integer>>, HashSet<Integer>> getAccumulator_v1() {
         return (item2group, group) -> {
-            //System.out.println("Groups2Par.getAccumulator_v1");
+            //System.out.println("graphcomponens.Groups2Par.getAccumulator_v1");
             HashSet<Integer> mergedGroup = new HashSet<>(group);// could we reuse an existing set?
             for (Integer relation : group) {
                 HashSet<Integer> relationGroup = item2group.get(relation);
@@ -143,7 +145,7 @@ public class Groups2Par {
 
     private BiConsumer<HashMap<Integer, HashSet<Integer>>, HashMap<Integer, HashSet<Integer>>> getCombiner_v1() {
         return (item2group1, item2group2) -> {
-            //System.out.println("Groups2Par.getCombiner_v1");
+            //System.out.println("graphcomponens.Groups2Par.getCombiner_v1");
             final BiConsumer<HashMap<Integer, HashSet<Integer>>, HashSet<Integer>> accumulator = getAccumulator_v1();
             final HashSet<Integer> groupsMerged = new HashSet<>(item2group2.size());
             item2group2.values().forEach(group -> {

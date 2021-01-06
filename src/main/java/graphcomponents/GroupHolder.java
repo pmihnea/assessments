@@ -1,3 +1,5 @@
+package graphcomponents;
+
 import java.util.HashSet;
 
 public class GroupHolder {
