@@ -15,7 +15,7 @@ public class JoinOperator {
      * D = O1 - O2 can be written O( n1*n2 ( NR - IR ) ) where NR = (n1-n2)/(n1*n2) and IR = (nIndex1-nIndex2)/(nIndex1*nIndex2) <br>
      * to see whether D > 0, we need to see whether NR > IR, which requires the creation of both indexes. <br>
      * The overall join memory complexity is O(n1) or O(n2) given by the index creation. <br>
-     * In case we do not want to create both index, as it would increase the runtime complexity anyway,
+     * In case we do not want to create both indexes, as it would increase the runtime complexity anyway,
      *  we can rely mostly on the memory complexity.
      *  So if n1 > n2 then we should index the second smaller relation with n2 elements as it takes less memory.
      */
@@ -49,7 +49,7 @@ public class JoinOperator {
         }else{
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error
-            throw new IllegalStateException("The two input relations have nto common column!");
+            throw new IllegalStateException("The two input relations have no common column!");
         }
     }
 
