@@ -13,7 +13,7 @@ public class IndexTest {
         final ArrayList<Column> indexColumns = new ArrayList<>();
         indexColumns.add(SampleColumns.X);
 
-        final Index index = new Index(SampleRelations.getRelation1(), indexColumns);
+        final Index index = new Index(SampleRelations.getRelationXY(), indexColumns);
 
         final Map<Row, ArrayList<Row>> values = index.getValues();
         Assertions.assertEquals(
