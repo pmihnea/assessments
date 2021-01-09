@@ -3,25 +3,22 @@ package joinoperator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class Index {
+public class Index extends Metadata {
     private Relation relation;
-    private ArrayList<Column> columns;
+
     private Map<Row, ArrayList<Row>> values;
 
     public Index(Relation relation, ArrayList<Column> columns) {
+        super(columns);
         this.relation = relation;
-        this.columns = columns;
         this.values = new HashMap<>();
         initValues();
     }
 
     public Relation getRelation() {
         return relation;
-    }
-
-    public ArrayList<Column> getColumns() {
-        return columns;
     }
 
     public Map<Row, ArrayList<Row>> getValues() {
@@ -31,23 +28,18 @@ public class Index {
     private void initValues() {
         for (Row relationRow : relation.getRows()) {
             final Row indexRow = createIndexRowFromRelationRow(relation, relationRow);
-
-            ArrayList<Row> existingRelationRows = values.get(indexRow);
-            if (existingRelationRows == null) {
-                existingRelationRows = new ArrayList<>();
-                values.put(indexRow, existingRelationRows);
-            }
+            ArrayList<Row> existingRelationRows = values.computeIfAbsent(indexRow, k -> new ArrayList<>());
             existingRelationRows.add(relationRow);
         }
     }
 
     public Row createIndexRowFromRelationRow(Relation relation, Row relationRow) {
-        // copy the index values
+        // copy the relation values to the index values
         Object[] indexValues = new Object[columns.size()];
-        for (int c = 0; c < columns.size(); c++) {
-            final int i = relation.getColumns().indexOf(columns.get(c));
-            if(i < 0) throw new IllegalStateException("Index columns cannot be found in relation set of columns!");
-            indexValues[c] = relationRow.getValues()[i];
+        for (int i = 0; i < columns.size(); i++) {
+            int ri = Optional.ofNullable(relation.getColumnIndexMap().get(columns.get(i)))
+                    .orElseThrow(() -> new IllegalStateException("Index columns cannot be found in the relation set of columns!"));
+            indexValues[i] = relationRow.getValues()[ri];
         }
         return new Row(indexValues);
     }

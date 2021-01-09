@@ -2,6 +2,7 @@ package joinoperator;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 public class JoinOperator {
     /**
@@ -12,12 +13,12 @@ public class JoinOperator {
      * =  O(n1+b*n2) where b ~= n1/nIndex1 in average <br>
      * =  O(n1+n1*n2/nIndex1) = O(n1*(1+n2/nIndex1)) = O1 <br>
      * In case the second relation is indexed O(n2*(1+n1/nIndex2)) = O2 <br>
-     * D = O1 - O2 can be written O( n1*n2 ( NR - IR ) ) where NR = (n1-n2)/(n1*n2) and IR = (nIndex1-nIndex2)/(nIndex1*nIndex2) <br>
+     * D = O1 - O2 can be written O( n1*n2*( NR - IR ) ) where NR = (n1-n2)/(n1*n2) and IR = (nIndex1-nIndex2)/(nIndex1*nIndex2) <br>
      * to see whether D > 0, we need to see whether NR > IR, which requires the creation of both indexes. <br>
      * The overall join memory complexity is O(n1) or O(n2) given by the index creation. <br>
      * In case we do not want to create both indexes, as it would increase the runtime complexity anyway,
-     *  we can rely mostly on the memory complexity.
-     *  So if n1 > n2 then we should index the second smaller relation with n2 elements as it takes less memory.
+     * we can rely mostly on the memory complexity.
+     * So if n1 > n2 then we should index the second smaller relation with n2 elements as it takes less memory.
      */
     public Relation join(Relation r1, Relation r2) {
         Objects.requireNonNull(r1);
@@ -25,7 +26,7 @@ public class JoinOperator {
 
         final ArrayList<Column> commonColumns = Columns.intersection(r1.getColumns(), r2.getColumns());
 
-        if(commonColumns.size() > 0) {
+        if (commonColumns.size() > 0) {
             // perform a join
 
             // create an index of the smallest relation
@@ -38,15 +39,11 @@ public class JoinOperator {
             // create the values of the output relation
             for (Row bRow : bRel.getRows()) {
                 final Row indexRow = sRelIndex.createIndexRowFromRelationRow(bRel, bRow);
-                final ArrayList<Row> sRows = sRelIndex.getValues().get(indexRow);
-                if (sRows != null && sRows.size() > 0) {
-                    for (Row sRow : sRows) {
-                        outRel.getRows().add(Relations.mergeRows(bRel, bRow, sRel, sRow, outRel));
-                    }
-                }
+                final Optional<ArrayList<Row>> optSRows = Optional.ofNullable(sRelIndex.getValues().get(indexRow));
+                optSRows.ifPresent(sRows -> sRows.forEach(sRow -> outRel.addMergedRow(bRel, bRow, sRel, sRow)));
             }
             return outRel;
-        }else{
+        } else {
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error
             throw new IllegalStateException("The two input relations have no common column!");
