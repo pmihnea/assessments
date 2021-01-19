@@ -1,0 +1,69 @@
+"C:\Program Files\Java\jdk-11.0.7\bin\java.exe" -javaagent:C:\dev\programs\JetBrains\ideaIU-2020.2.3\lib\idea_rt.jar=64513:C:\dev\programs\JetBrains\ideaIU-2020.2.3\bin -Dfile.encoding=UTF-8 -classpath C:\dev\private\assesment-amazon-2020-11-03\out\production\assesment-amazon-2020-11-03 graphcomponens.Groups2
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 599
+Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 87811
+
+"C:\Program Files\Java\jdk-11.0.7\bin\java.exe" -javaagent:C:\dev\programs\JetBrains\ideaIU-2020.2.3\lib\idea_rt.jar=65051:C:\dev\programs\JetBrains\ideaIU-2020.2.3\bin -Dfile.encoding=UTF-8 -classpath C:\dev\private\assesment-amazon-2020-11-03\out\production\assesment-amazon-2020-11-03 graphcomponens.Groups2
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 10 # actual = 10 # duration [ms] = 483
+Test8-100000 is OK  # expected = 10 # actual = 10 # duration [ms] = 69620
+
+"C:\Program Files\Java\jdk-11.0.7\bin\java.exe" -javaagent:C:\dev\programs\JetBrains\ideaIU-2020.2.3\lib\idea_rt.jar=65289:C:\dev\programs\JetBrains\ideaIU-2020.2.3\bin -Dfile.encoding=UTF-8 -classpath C:\dev\private\assesment-amazon-2020-11-03\out\production\assesment-amazon-2020-11-03 graphcomponens.Groups2
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 10 # actual = 10 # duration [ms] = 567
+Test8-100000 is OK  # expected = 10 # actual = 10 # duration [ms] = 65483
+
+
+"C:\Program Files\Java\jdk-11.0.7\bin\java.exe" -javaagent:C:\dev\programs\JetBrains\ideaIU-2020.2.3\lib\idea_rt.jar=65086:C:\dev\programs\JetBrains\ideaIU-2020.2.3\bin -Dfile.encoding=UTF-8 -classpath C:\dev\private\assesment-amazon-2020-11-03\out\production\assesment-amazon-2020-11-03 graphcomponens.Groups2Par
+Test1 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 11
+Test2 parallel=true is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 parallel=true is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 parallel=true is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 parallel=true is OK  # expected = 10 # actual = 10 # duration [ms] = 741
+Test8-100000 parallel=true is OK  # expected = 10 # actual = 10 # duration [ms] = 117109
+
+
+"C:\Program Files\Java\jdk-11.0.7\bin\java.exe" -javaagent:C:\dev\programs\JetBrains\ideaIU-2020.2.3\lib\idea_rt.jar=65327:C:\dev\programs\JetBrains\ideaIU-2020.2.3\bin -Dfile.encoding=UTF-8 -classpath C:\dev\private\assesment-amazon-2020-11-03\out\production\assesment-amazon-2020-11-03 graphcomponens.Groups2Par
+Test1 parallel=false is OK  # expected = 1 # actual = 1 # duration [ms] = 12
+Test2 parallel=false is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 parallel=false is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 parallel=false is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 parallel=false is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 parallel=false is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 parallel=false is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 parallel=false is OK  # expected = 10 # actual = 10 # duration [ms] = 1700
+Test8-100000 parallel=false is OK  # expected = 10 # actual = 10 # duration [ms] = 240701
+
+Test1 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test2 parallel=true is OK  # expected = 2 # actual = 2 # duration [ms] = 20
+Test3 parallel=true is OK  # expected = 3 # actual = 3 # duration [ms] = 1
+Test4 parallel=true is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 parallel=true is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 parallel=true is OK  # expected = 10 # actual = 10 # duration [ms] = 1149
+Test8-100000 parallel=true is OK  # expected = 10 # actual = 10 # duration [ms] = 145751
+
+
+Process finished with exit code 0

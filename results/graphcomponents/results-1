@@ -1,0 +1,44 @@
+####### Group 1 #######
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 638
+Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 100729
+
+
+####### Group 2 #######
+
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 17
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 633
+Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 78906
+
+
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 617
+Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 91232
+
+Test1 is OK  # expected = 1 # actual = 1 # duration [ms] = 17
+Test2 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test3 is OK  # expected = 3 # actual = 3 # duration [ms] = 0
+Test4 is OK  # expected = 2 # actual = 2 # duration [ms] = 0
+Test5 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test6 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test7 is OK  # expected = 1 # actual = 1 # duration [ms] = 0
+Test8-10000 is OK  # expected = 2 # actual = 2 # duration [ms] = 616
+Test8-100000 is OK  # expected = 2 # actual = 2 # duration [ms] = 84317
+
