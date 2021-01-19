@@ -38,20 +38,28 @@ public class JoinOperator {
             Relation bRel = (sRel == r1) ? r2 : r1; //biggest
             final Index sRelIndex = new Index(sRel, commonColumns);
 
-            // create the columns of the output relation
-            Relation outRel = new Relation(Columns.union(r1.getColumns(), r2.getColumns()));
-            // create the values of the output relation
-            for (Row bRow : bRel.getRows()) {
-                final Row indexRow = sRelIndex.createIndexRowFromRelationRow(bRel, bRow);
-                final Optional<ArrayList<Row>> optSRows = Optional.ofNullable(sRelIndex.getValues().get(indexRow));
-                optSRows.ifPresent(sRows -> sRows.forEach(sRow -> outRel.addMergedRow(bRel, bRow, sRel, sRow)));
-            }
-            return outRel;
+            return join(bRel, sRelIndex);
         } else {
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error
             throw new IllegalStateException("The two input relations have no common column!");
         }
+    }
+
+    public Relation join(Relation bRel, Index sRelIndex) {
+        Objects.requireNonNull(bRel);
+        Objects.requireNonNull(sRelIndex);
+        Relation sRel = sRelIndex.getRelation();
+
+        // create the columns of the output relation
+        Relation outRel = new Relation(Columns.union(bRel.getColumns(), sRel.getColumns()));
+        // create the values of the output relation
+        for (Row bRow : bRel.getRows()) {
+            final Row indexRow = sRelIndex.createIndexRowFromRelationRow(bRel, bRow);
+            final Optional<ArrayList<Row>> optSRows = Optional.ofNullable(sRelIndex.getValues().get(indexRow));
+            optSRows.ifPresent(sRows -> sRows.forEach(sRow -> outRel.addMergedRow(bRel, bRow, sRel, sRow)));
+        }
+        return outRel;
     }
 
 }

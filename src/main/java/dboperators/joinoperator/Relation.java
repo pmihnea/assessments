@@ -7,9 +7,10 @@ import dboperators.Row;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Relation extends RelationMetadata {
-    private ArrayList<Row> rows;
+    private List<Row> rows;
 
     public static Relation of(Column... columns) {
         return new Relation(new ArrayList<>(Arrays.asList(columns)));
@@ -20,7 +21,12 @@ public class Relation extends RelationMetadata {
         this.rows = new ArrayList<>();
     }
 
-    public ArrayList<Row> getRows() {
+    public Relation(ArrayList<Column> columns, List<Row> rows) {
+        super(columns);
+        this.rows = rows;
+    }
+
+    public List<Row> getRows() {
         return rows;
     }
 
