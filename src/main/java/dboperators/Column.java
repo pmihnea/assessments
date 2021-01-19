@@ -1,4 +1,4 @@
-package joinoperator;
+package dboperators;
 
 import java.util.Objects;
 

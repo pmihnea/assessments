@@ -1,11 +1,15 @@
-package joinoperator;
+package dboperators.joinoperator;
+
+import dboperators.Column;
+import dboperators.RelationMetadata;
+import dboperators.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Index extends Metadata {
+public class Index extends RelationMetadata {
     private Relation relation;
 
     private Map<Row, ArrayList<Row>> values;

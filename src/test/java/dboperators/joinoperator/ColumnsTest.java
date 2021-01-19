@@ -1,5 +1,7 @@
-package joinoperator;
+package dboperators.joinoperator;
 
+import dboperators.Column;
+import dboperators.Columns;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
