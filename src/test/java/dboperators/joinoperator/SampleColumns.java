@@ -1,4 +1,7 @@
-package joinoperator;
+package dboperators.joinoperator;
+
+import dboperators.Column;
+import dboperators.ColumnType;
 
 public interface SampleColumns {
     Column X = new Column("X", ColumnType.VARCHAR);

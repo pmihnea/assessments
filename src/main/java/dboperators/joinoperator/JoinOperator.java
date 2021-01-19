@@ -1,4 +1,8 @@
-package joinoperator;
+package dboperators.joinoperator;
+
+import dboperators.Column;
+import dboperators.Columns;
+import dboperators.Row;
 
 import java.util.ArrayList;
 import java.util.Objects;

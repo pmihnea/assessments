@@ -1,4 +1,6 @@
-package joinoperator;
+package dboperators.joinoperator;
+
+import dboperators.Row;
 
 public class SampleRelations {
     public static Relation getRelationXY(){
