@@ -1,6 +1,7 @@
 package dboperators;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class Column {
     private String name;
@@ -8,11 +9,10 @@ public class Column {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Column{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", type=").append(type);
-        sb.append('}');
-        return sb.toString();
+        return new StringJoiner(", ", Column.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("type=" + type)
+                .toString();
     }
 
     public Column(String name, ColumnType type) {

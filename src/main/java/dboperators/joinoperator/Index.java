@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class Index extends RelationMetadata {
     private Relation relation;
@@ -46,5 +47,13 @@ public class Index extends RelationMetadata {
             indexValues[i] = relationRow.getValues()[ri];
         }
         return new Row(indexValues);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Index.class.getSimpleName() + "[", "]")
+                .add("columns=" + columns)
+                .add("values=" + values)
+                .toString();
     }
 }

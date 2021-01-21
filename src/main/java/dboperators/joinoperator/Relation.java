@@ -8,6 +8,7 @@ import dboperators.Row;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class Relation extends RelationMetadata {
     private List<Row> rows;
@@ -32,11 +33,10 @@ public class Relation extends RelationMetadata {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Relation{");
-        sb.append("columns=").append(columns);
-        sb.append(", rows=").append(rows);
-        sb.append('}');
-        return sb.toString();
+        return new StringJoiner(", ", Relation.class.getSimpleName() + "[", "]")
+                .add("columns=" + columns)
+                .add("rows=" + rows)
+                .toString();
     }
 
     public Row addMergedRow(Relation rel1, Row row1, Relation rel2, Row row2) {
