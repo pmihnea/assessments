@@ -16,6 +16,7 @@
         <vavr.version>1.0.0-alpha-3</vavr.version>
         <surefire.version>3.0.0-M5</surefire.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <streamex.version>0.7.3</streamex.version>
     </properties>
 
     <build>
@@ -54,6 +55,11 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>${vavr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>one.util</groupId>
+            <artifactId>streamex</artifactId>
+            <version>${streamex.version}</version>
         </dependency>
     </dependencies>
 </project>

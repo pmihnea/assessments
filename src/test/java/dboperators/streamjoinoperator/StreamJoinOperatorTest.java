@@ -1,18 +1,30 @@
 package dboperators.streamjoinoperator;
 
+import dboperators.Row;
 import dboperators.joinoperator.JoinOperator;
 import dboperators.joinoperator.Relation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static dboperators.streamjoinoperator.SampleRelations.MAX_RELATION_SIZE;
 
 public class StreamJoinOperatorTest {
-    @Test
-    public void testXYZ_StreamJoin() {
-        StreamJoinOperator joinOperator = new StreamJoinOperator();
+    private static Stream<IStreamJoinOperator> streamJoinImpl() {
+        return Stream.of(
+                new StreamJoinOperator1(),
+                new StreamJoinOperator2()
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("streamJoinImpl")
+    public void testXYZ_StreamJoin(IStreamJoinOperator joinOperator) {
 
         final StreamRelation r1 = SampleRelations.getRelationXY();
         System.out.println("r1     = " + r1);
@@ -23,9 +35,24 @@ public class StreamJoinOperatorTest {
         final StreamRelation output = joinOperator.join(r2, r1);
         System.out.println("out    = " + output);
         final long outputRowsCount = output.getRows().count();
+        //final long outputRowsCount = output.getRows().takeWhile(counter(100)).count();
         System.out.println("output rows count = " + outputRowsCount);
 
         Assertions.assertEquals((MAX_RELATION_SIZE + 2) / 3 * 3, outputRowsCount);
+        //Assertions.assertEquals(100, outputRowsCount);
+    }
+
+    private Predicate<Row> counter(final int max) {
+        return new Predicate<Row>() {
+
+            int count = 0;
+
+            @Override
+            public boolean test(Row row) {
+                count++;
+                return count <= max;
+            }
+        };
     }
 
     @Test

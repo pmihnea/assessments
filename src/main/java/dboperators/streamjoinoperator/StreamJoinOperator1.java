@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class StreamJoinOperator {
+public class StreamJoinOperator1 implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
+    @Override
     public StreamRelation join(StreamRelation rel1, StreamRelation rel2) {
         Objects.requireNonNull(rel1);
         Objects.requireNonNull(rel2);
@@ -38,7 +39,7 @@ public class StreamJoinOperator {
                     .map(ri -> new JoinOperator().join(ri._1(), ri._2()));
 
             // create the output relation
-            return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> Stream.ofAll(outRel.getRows())).toJavaStream());
+            return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> Stream.ofAll(outRel.getRows())).toJavaStream()/*.parallel()*/);
         } else {
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error

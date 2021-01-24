@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class SampleRelations {
 
-    public static final long MAX_RELATION_SIZE = 1 << 20;
+    public static final long MAX_RELATION_SIZE = 1 << 17;
 
     public static StreamRelation getRelationXY() {
         final java.util.stream.Stream<Row> rows = Stream.range(0, MAX_RELATION_SIZE)
