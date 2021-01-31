@@ -15,6 +15,7 @@ import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// Based on StreamEx library and its cross product function (between a stream and a collection)
 public class StreamJoinOperator2 implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
@@ -38,7 +39,7 @@ public class StreamJoinOperator2 implements IStreamJoinOperator {
             final StreamEx<Relation> relations2 = StreamEx.of(rel2.getRows()).groupRuns(sameGroup2)
                     .map(rows -> new Relation(rel2.getColumns(), rows));
             final StreamEx<Index> indexes2 = relations2.map(rc2 -> new Index(rc2, commonColumns));
-            final List<Index> indexes2List = indexes2.collect(Collectors.toList()); //TODO remove it
+            final List<Index> indexes2List = indexes2.collect(Collectors.toList());
 
             final Stream<Relation> outRelations = relations1.cross(indexes2List)
                     .map(entry -> JoinOperator.join(entry.getKey(), entry.getValue()));
@@ -46,7 +47,7 @@ public class StreamJoinOperator2 implements IStreamJoinOperator {
                     .map(index2 -> new JoinOperator().join(relation1, index2)));*/
 
             // create the output relation
-            return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> outRel.getRows().stream())/*.parallel()*/);
+            return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> outRel.getRows().stream()).parallel());
         } else {
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error

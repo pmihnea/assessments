@@ -9,9 +9,11 @@ import io.vavr.collection.Iterator;
 import io.vavr.collection.Stream;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// Based on vavr library and its cross product function with two streams
 public class StreamJoinOperator1 implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
@@ -39,7 +41,7 @@ public class StreamJoinOperator1 implements IStreamJoinOperator {
                     .map(ri -> JoinOperator.join(ri._1(), ri._2()));
 
             // create the output relation
-            return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> Stream.ofAll(outRel.getRows())).toJavaStream()/*.parallel()*/);
+            return new StreamRelation(outRelColumns, outRelations.toJavaStream().map(outRel -> outRel.getRows()).flatMap(Collection::stream));
         } else {
             // create a Cartesian product as there is no common column
             //TODO: implement it or leave it as an error

@@ -19,7 +19,7 @@ public class StreamJoinOperatorTest {
         return Stream.of(
                 new StreamJoinOperator1(),
                 new StreamJoinOperator2(),
-                new InfonautikaStreamJoinOperator3(),
+                new StreamJoinOperator3(),
                 new StreamJoinOperator4()
         );
     }

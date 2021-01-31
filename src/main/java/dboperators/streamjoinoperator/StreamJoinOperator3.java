@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class InfonautikaStreamJoinOperator3 implements IStreamJoinOperator {
+// Base on de.infonautika.streamjoin.Join implementation
+// It reads one relation completely and create an index from it
+// and then iterates through the second relation and creates the join result
+public class StreamJoinOperator3 implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
     public StreamRelation join(StreamRelation rel1, StreamRelation rel2) {
