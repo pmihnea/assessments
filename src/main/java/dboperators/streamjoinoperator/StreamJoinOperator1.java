@@ -36,7 +36,7 @@ public class StreamJoinOperator1 implements IStreamJoinOperator {
             final Iterator<Index> indexes2 = relations2.map(rc2 -> new Index(rc2, commonColumns));
 
             final Iterator<Relation> outRelations = Stream.ofAll(relations1).crossProduct(Stream.ofAll(indexes2))
-                    .map(ri -> new JoinOperator().join(ri._1(), ri._2()));
+                    .map(ri -> JoinOperator.join(ri._1(), ri._2()));
 
             // create the output relation
             return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> Stream.ofAll(outRel.getRows())).toJavaStream()/*.parallel()*/);

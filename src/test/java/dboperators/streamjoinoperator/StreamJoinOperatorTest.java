@@ -19,7 +19,8 @@ public class StreamJoinOperatorTest {
         return Stream.of(
                 new StreamJoinOperator1(),
                 new StreamJoinOperator2(),
-                new InfonautikaStreamJoinOperator3()
+                new InfonautikaStreamJoinOperator3(),
+                new StreamJoinOperator4()
         );
     }
 
@@ -59,8 +60,6 @@ public class StreamJoinOperatorTest {
 
     @Test
     public void testXYZ_Join() {
-        JoinOperator joinOperator = new JoinOperator();
-
         final StreamRelation r1 = SampleRelations.getRelationXY();
         Relation rf1 = new Relation(r1.getColumns(), r1.getRows().collect(Collectors.toList()));
         System.out.println("rf1 columns = " + rf1.getColumns());
@@ -71,7 +70,7 @@ public class StreamJoinOperatorTest {
         System.out.println("rf2 columns = " + rf2.getColumns());
         System.out.println("rf2 rows count = " + rf2.getRows().size());
 
-        final Relation output = joinOperator.join(rf2, rf1);
+        final Relation output = JoinOperator.join(rf2, rf1);
         final long outputRowsCount = output.getRows().size();
         System.out.println("output columns = " + output.getColumns());
         System.out.println("output rows count = " + outputRowsCount);

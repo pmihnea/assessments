@@ -41,7 +41,7 @@ public class StreamJoinOperator2 implements IStreamJoinOperator {
             final List<Index> indexes2List = indexes2.collect(Collectors.toList()); //TODO remove it
 
             final Stream<Relation> outRelations = relations1.cross(indexes2List)
-                    .map(entry -> new JoinOperator().join(entry.getKey(), entry.getValue()));
+                    .map(entry -> JoinOperator.join(entry.getKey(), entry.getValue()));
             /*final Stream<Relation> outRelations = relations1List.stream().flatMap( relation1 -> indexes2List.stream()
                     .map(index2 -> new JoinOperator().join(relation1, index2)));*/
 

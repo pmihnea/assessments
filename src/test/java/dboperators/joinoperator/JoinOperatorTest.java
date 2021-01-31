@@ -24,15 +24,13 @@ public class JoinOperatorTest {
 
     @Test
     public void testXYZ() {
-        JoinOperator joinOperator = new JoinOperator();
-
         final Relation r1 = SampleRelations.getRelationXY();
         System.out.println("r1     = " + r1);
 
         final Relation r2 = SampleRelations.getRelationXZ();
         System.out.println("r2     = " + r2);
 
-        final Relation output = joinOperator.join(r1, r2);
+        final Relation output = JoinOperator.join(r1, r2);
         System.out.println("output = " + output);
 
         Assertions.assertEquals(asSet(SampleColumns.X, SampleColumns.Y, SampleColumns.Z),
@@ -51,15 +49,13 @@ public class JoinOperatorTest {
 
     @Test
     public void testPXYQ() {
-        JoinOperator joinOperator = new JoinOperator();
-
         final Relation r1 = SampleRelations.getRelationPXY();
         System.out.println("r1     = " + r1);
 
         final Relation r2 = SampleRelations.getRelationQXY();
         System.out.println("r2     = " + r2);
 
-        final Relation output = joinOperator.join(r1, r2);
+        final Relation output = JoinOperator.join(r1, r2);
         System.out.println("output = " + output);
 
         Assertions.assertEquals(asSet(SampleColumns.P, SampleColumns.X, SampleColumns.Y, SampleColumns.Q),

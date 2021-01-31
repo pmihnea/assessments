@@ -25,7 +25,7 @@ public class JoinOperator {
      * we can rely mostly on the memory complexity.
      * So if n1 > n2 then we should index the second smaller relation with n2 elements as it takes less memory.
      */
-    public Relation join(Relation r1, Relation r2) {
+    public static Relation join(Relation r1, Relation r2) {
         Objects.requireNonNull(r1);
         Objects.requireNonNull(r2);
 
@@ -47,7 +47,7 @@ public class JoinOperator {
         }
     }
 
-    public Relation join(Relation bRel, Index sRelIndex) {
+    public static Relation join(Relation bRel, Index sRelIndex) {
         Objects.requireNonNull(bRel);
         Objects.requireNonNull(sRelIndex);
         Relation sRel = sRelIndex.getRelation();
