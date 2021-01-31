@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class SampleRelations {
 
-    public static final long MAX_RELATION_SIZE = 1L << 20;
+    public static final long MAX_RELATION_SIZE = 1L << 18;
 
     public static StreamRelation getRelationXY() {
         final Stream<Row> rows = LongStream.range(0L, MAX_RELATION_SIZE)
