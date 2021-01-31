@@ -19,16 +19,21 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/*
-It uses the vavr library for sequential stream/iterator operations.
-Implements a custom join operation based on
-- first grouping both relations rows into a stream of chunks of rows of fixed size,
-- then mapping one stream of chunked relations into indexes
-- then  creating a cross product between the stream of chunked relations and the stream of chunked indexes by
-  - zipping the two streams into pairs of current list of relations and current list of indexes
-  - and then joining the index head with the relation head, the index head with all tail elements of the relations list,
-  the relation head with all tail elements of the indexes list
-  - and concatenating all those above result streams
+/**
+It uses the vavr library for sequential stream/iterator operations.<br>
+Implements a custom join operation based on the following steps:
+ <ul>
+<li>first groups both relations rows into a stream of chunks of rows of fixed size,</li>
+<li>then maps one stream of chunked relations into indexes </li>
+<li>then  creates a cross product between the stream of chunked relations and the stream of chunked indexes by
+ <ul>
+  <li>zipping the two streams into pairs of current list of relations and current list of indexes </li>
+ <li>and then joining the index head with the relation head, the index head with all tail elements of the relations list,
+  the relation head with all tail elements of the indexes list </li>
+ <li>and then concatenating all those above result streams </li>
+ </ul>
+</li>
+ </ul>
  */
 public class StreamJoinOperator4 implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
