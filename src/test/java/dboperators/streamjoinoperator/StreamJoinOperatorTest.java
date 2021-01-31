@@ -26,7 +26,11 @@ public class StreamJoinOperatorTest {
 
     @ParameterizedTest
     @MethodSource("streamJoinImpl")
-    public void testXYZ_StreamJoin(IStreamJoinOperator joinOperator) {
+    public void testXYZ_StreamJoin_All(IStreamJoinOperator joinOperator) {
+        testXYZ_StreamJoin(joinOperator, null);
+    }
+
+    public void testXYZ_StreamJoin(IStreamJoinOperator joinOperator, Long limit) {
         System.out.println("MAX_RELATION_SIZE = " + MAX_RELATION_SIZE);
 
         final StreamRelation r1 = SampleRelations.getRelationXY();
@@ -37,18 +41,26 @@ public class StreamJoinOperatorTest {
 
         final StreamRelation output = joinOperator.join(r2, r1);
         System.out.println("out    = " + output);
-        final long outputRowsCount = output.getRows().count();
-        //final long outputRowsCount = output.getRows().takeWhile(counter(100)).count();
+        final long outputRowsCount = limit == null ?
+                output.getRows().sequential().count()
+                : output.getRows().sequential().takeWhile(counter(limit)).count();
         System.out.println("output rows count = " + outputRowsCount);
 
-        Assertions.assertEquals((MAX_RELATION_SIZE + 2) / 3 * 3, outputRowsCount);
-        //Assertions.assertEquals(100, outputRowsCount);
+        long expectedRowsCount = limit == null ?
+                (MAX_RELATION_SIZE + 2) / 3 * 3
+                : limit;
+        Assertions.assertEquals(expectedRowsCount, outputRowsCount);
     }
 
-    private Predicate<Row> counter(final int max) {
+    @ParameterizedTest
+    @MethodSource("streamJoinImpl")
+    public void testXYZ_StreamJoin_First100(IStreamJoinOperator joinOperator) {
+        testXYZ_StreamJoin(joinOperator, 100L);
+    }
+    private Predicate<Row> counter(final long max) {
         return new Predicate<Row>() {
 
-            int count = 0;
+            long count = 0;
 
             @Override
             public boolean test(Row row) {
