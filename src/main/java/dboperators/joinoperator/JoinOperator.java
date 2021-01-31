@@ -2,6 +2,7 @@ package dboperators.joinoperator;
 
 import dboperators.Column;
 import dboperators.Columns;
+import dboperators.Relations;
 import dboperators.Row;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class JoinOperator {
         Relation outRel = new Relation(Columns.union(bRel.getColumns(), sRel.getColumns()));
         // create the values of the output relation
         for (Row bRow : bRel.getRows()) {
-            final Row indexRow = sRelIndex.createIndexRowFromRelationRow(bRel, bRow);
+            final Row indexRow = Relations.extractRow(bRel, bRow, sRelIndex);
             final Optional<ArrayList<Row>> optSRows = Optional.ofNullable(sRelIndex.getValues().get(indexRow));
             optSRows.ifPresent(sRows -> sRows.forEach(sRow -> outRel.addMergedRow(bRel, bRow, sRel, sRow)));
         }

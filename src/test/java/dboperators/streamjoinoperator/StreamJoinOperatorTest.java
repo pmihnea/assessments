@@ -18,13 +18,15 @@ public class StreamJoinOperatorTest {
     private static Stream<IStreamJoinOperator> streamJoinImpl() {
         return Stream.of(
                 new StreamJoinOperator1(),
-                new StreamJoinOperator2()
+                new StreamJoinOperator2(),
+                new InfonautikaStreamJoinOperator3()
         );
     }
 
     @ParameterizedTest
     @MethodSource("streamJoinImpl")
     public void testXYZ_StreamJoin(IStreamJoinOperator joinOperator) {
+        System.out.println("MAX_RELATION_SIZE = " + MAX_RELATION_SIZE);
 
         final StreamRelation r1 = SampleRelations.getRelationXY();
         System.out.println("r1     = " + r1);
