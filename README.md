@@ -1,1 +1,4 @@
-"# assessments: 2020-11-03, 2021-01-05" 
+assessments:
+- db operators
+- graph components
+- transaction logs 
