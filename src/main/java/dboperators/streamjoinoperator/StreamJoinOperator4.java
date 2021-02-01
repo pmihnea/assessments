@@ -59,7 +59,6 @@ public class StreamJoinOperator4 implements IStreamJoinOperator {
             final Iterator<List<Index>> indexes2 = relations2.map(rc2 -> new Index(rc2, commonColumns))
                     .map(toIntermediaryList());
 
-            final JoinOperator joinOperator = new JoinOperator();
             final Iterator<Relation> outRelations = this.zipAll(relations1, indexes2, toLastWhenNull(), toLastWhenNull())
                     .flatMap(relationIndexLists -> {
                         final List<Relation> cRelations1 = relationIndexLists._1();
