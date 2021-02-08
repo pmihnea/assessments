@@ -1,6 +1,5 @@
 package dboperators.streamjoinoperator;
 
-import dboperators.Row;
 import dboperators.joinoperator.JoinOperator;
 import dboperators.joinoperator.Relation;
 import org.junit.jupiter.api.Assertions;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,8 +40,8 @@ public class StreamJoinOperatorTest {
         final StreamRelation output = joinOperator.join(r2, r1);
         System.out.println("out    = " + output);
         final long outputRowsCount = limit == null ?
-                output.getRows().sequential().count()
-                : output.getRows().sequential().takeWhile(counter(limit)).count();
+                output.getRows().count()
+                : output.getRows().unordered().limit(limit).count();
         System.out.println("output rows count = " + outputRowsCount);
 
         long expectedRowsCount = limit == null ?
@@ -56,18 +54,6 @@ public class StreamJoinOperatorTest {
     @MethodSource("streamJoinImpl")
     public void testXYZ_StreamJoin_First100(IStreamJoinOperator joinOperator) {
         testXYZ_StreamJoin(joinOperator, 100L);
-    }
-    private Predicate<Row> counter(final long max) {
-        return new Predicate<Row>() {
-
-            long count = 0;
-
-            @Override
-            public boolean test(Row row) {
-                count++;
-                return count <= max;
-            }
-        };
     }
 
     @Test
