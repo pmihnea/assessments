@@ -25,10 +25,10 @@ public class StreamJoinOperatorTest {
     @ParameterizedTest
     @MethodSource("streamJoinImpl")
     public void testXYZ_StreamJoin_All(IStreamJoinOperator joinOperator) {
-        testXYZ_StreamJoin(joinOperator, null);
+        testXYZ_StreamJoin_AllRows(joinOperator, null);
     }
 
-    public void testXYZ_StreamJoin(IStreamJoinOperator joinOperator, Long limit) {
+    public void testXYZ_StreamJoin_AllRows(IStreamJoinOperator joinOperator, Long limit) {
         System.out.println("MAX_RELATION_SIZE = " + MAX_RELATION_SIZE);
 
         final StreamRelation r1 = SampleRelations.getRelationXY();
@@ -52,12 +52,12 @@ public class StreamJoinOperatorTest {
 
     @ParameterizedTest
     @MethodSource("streamJoinImpl")
-    public void testXYZ_StreamJoin_First100(IStreamJoinOperator joinOperator) {
-        testXYZ_StreamJoin(joinOperator, 100L);
+    public void testXYZ_StreamJoin_FirstRows(IStreamJoinOperator joinOperator) {
+        testXYZ_StreamJoin_AllRows(joinOperator, 1000L);
     }
 
     @Test
-    public void testXYZ_Join() {
+    public void testXYZ_NonStreamJoin() {
         final StreamRelation r1 = SampleRelations.getRelationXY();
         Relation rf1 = new Relation(r1.getColumns(), r1.getRows().collect(Collectors.toList()));
         System.out.println("rf1 columns = " + rf1.getColumns());
