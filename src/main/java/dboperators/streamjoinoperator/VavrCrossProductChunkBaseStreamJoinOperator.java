@@ -13,8 +13,10 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-// Based on vavr library and its cross product function with two streams
-public class StreamJoinOperator1 implements IStreamJoinOperator {
+/**
+ * Based on vavr library and its cross product function with two streams.
+ */
+public class VavrCrossProductChunkBaseStreamJoinOperator implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
     @Override

@@ -15,8 +15,10 @@ import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// Based on StreamEx library and its cross product function (between a stream and a collection)
-public class StreamJoinOperator2 implements IStreamJoinOperator {
+/**
+ * Based on StreamEx library and its cross product function (between a stream and an in memory collection).
+  */
+public class StreamExCrossProductChunkBasedStreamJoinOperator implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
     public StreamRelation join(StreamRelation rel1, StreamRelation rel2) {
@@ -33,7 +35,6 @@ public class StreamJoinOperator2 implements IStreamJoinOperator {
             final BiPredicate<Row, Row> sameGroup1 = new SameGroupPredicate();
             final StreamEx<Relation> relations1 = StreamEx.of(rel1.getRows()).groupRuns(sameGroup1)
                     .map(rows -> new Relation(rel1.getColumns(), rows));
-            //final List<Relation> relations1List = relations1.collect(Collectors.toList());//TODO remove it
 
             final BiPredicate<Row, Row> sameGroup2 = new SameGroupPredicate();
             final StreamEx<Relation> relations2 = StreamEx.of(rel2.getRows()).groupRuns(sameGroup2)
@@ -43,8 +44,6 @@ public class StreamJoinOperator2 implements IStreamJoinOperator {
 
             final Stream<Relation> outRelations = relations1.cross(indexes2List)
                     .map(entry -> JoinOperator.join(entry.getKey(), entry.getValue()));
-            /*final Stream<Relation> outRelations = relations1List.stream().flatMap( relation1 -> indexes2List.stream()
-                    .map(index2 -> new JoinOperator().join(relation1, index2)));*/
 
             // create the output relation
             return new StreamRelation(outRelColumns, outRelations.flatMap(outRel -> outRel.getRows().stream()).parallel());

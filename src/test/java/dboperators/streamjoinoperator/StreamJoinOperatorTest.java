@@ -15,11 +15,11 @@ import static dboperators.streamjoinoperator.SampleRelations.MAX_RELATION_SIZE;
 public class StreamJoinOperatorTest {
     private static Stream<IStreamJoinOperator> streamJoinImpl() {
         return Stream.of(
-                new StreamJoinOperator1(),
-                new StreamJoinOperator2(),
-                new StreamJoinOperator3(),
-                new StreamJoinOperator4(),
-                new StreamJoinOperator5()
+                new VavrCrossProductChunkBaseStreamJoinOperator(),
+                new StreamExCrossProductChunkBasedStreamJoinOperator(),
+                new SingleHashStreamJoinOperator(),
+                new CrossProductChunkBasedStreamJoinOperator(),
+                new SymmetricHashStreamJoinOperator()
         );
     }
 

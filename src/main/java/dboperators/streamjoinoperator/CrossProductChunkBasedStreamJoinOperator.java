@@ -34,8 +34,10 @@ Implements a custom join operation based on the following steps:
  </ul>
 </li>
  </ul>
+ Runtime complexity: O(N1*N2*b/chunk-size) - where b is the index bucket size. <br/>
+ Memory complexity: O(chunk-size) <br/>
  */
-public class StreamJoinOperator4 implements IStreamJoinOperator {
+public class CrossProductChunkBasedStreamJoinOperator implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
     @Override

@@ -18,10 +18,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * It uses the vavr library for sequential stream/iterator operations.<br>
- * Implements a custom join operation based on the following steps:
- */
-public class StreamJoinOperator5 implements IStreamJoinOperator {
+ * Implements a stream join operation by creating two indexes while reading the streams rows and joining iteratively the two new rows with the old ones from the indexes. <br/>
+ * The runtime complexity is O(N1*b2+N2*b1), where N1,N2 are number of rows of the two streams and b1,b2 are the sizes of the index buckets. <br/>
+ * The memory complexity is O(N1+N1/b1+N2+N2/b2)=O(N1+N2) because it stores in memory both indexes. <br/>
+ * */
+public class SymmetricHashStreamJoinOperator implements IStreamJoinOperator {
 
     @Override
     public StreamRelation join(StreamRelation rel1, StreamRelation rel2) {

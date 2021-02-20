@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-// Base on de.infonautika.streamjoin.Join implementation
-// It reads one relation completely and create an index from it
-// and then iterates through the second relation and creates the join result
-public class StreamJoinOperator3 implements IStreamJoinOperator {
+/**
+ Base on de.infonautika.streamjoin.Join implementation.<br/>
+ It reads one relation completely and creates an index from it
+ and then iterates through the second relation and creates the join result. <br/>
+ Runtime complexity O(N1+N2*b) <br/>
+ Memory complexity O(N2+N2/b)=O(N2) because it stores only one index in memory <br/>
+*/
+public class SingleHashStreamJoinOperator implements IStreamJoinOperator {
     private static final int CHUNK_SIZE = 1 << 10;
 
     public StreamRelation join(StreamRelation rel1, StreamRelation rel2) {
