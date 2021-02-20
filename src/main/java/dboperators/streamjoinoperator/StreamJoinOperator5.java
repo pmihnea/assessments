@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -53,28 +54,25 @@ public class StreamJoinOperator5 implements IStreamJoinOperator {
                     @Override
                     public boolean hasNext() {
                         while(!hasResults() && hasRows()) {
-                            // read next rows
-                            final Row row1 = rowsIterator1.hasNext() ? rowsIterator1.next() : null;
-                            final Row row2 = rowsIterator2.hasNext() ? rowsIterator2.next() : null;
+                            // Read next rows
+                            final Optional<Row> row1 = rowsIterator1.hasNext() ? Optional.of(rowsIterator1.next()) : Optional.empty();
+                            final Optional<Row> row2 = rowsIterator2.hasNext() ? Optional.of(rowsIterator2.next()) : Optional.empty();
 
-                            // join the rows with the old ones
-                            // add row1 to index1 and join index1 with row2
-                            if (row1 != null) {
-                                index1.addIndexRow(row1);
-                            }
-                            final ArrayList<Row> resultRows1 = (row2 != null) ? index1.getValues().getOrDefault(Relations.extractRow(rel2, row2, index1), EMPTY) : EMPTY;
-                            // join row1 with index2 without row2 to avoid the duplication of row1 with row2
-                            final ArrayList<Row> resultRows2 = (row1 != null) ? index2.getValues().getOrDefault(Relations.extractRow(rel1, row1, index2), EMPTY) : EMPTY;
+                            // Join the rows with the old ones
+                            // add row1 to index1
+                            row1.ifPresent(index1::addIndexRow);
+                            // join index1 with row2
+                            final ArrayList<Row> resultRows1 = row2.map(r2 -> index1.getValues().getOrDefault(Relations.extractRow(rel2, r2, index1), EMPTY)).orElse(EMPTY);
+                            // join row1 with index2 without row2 to avoid the duplication of joining row1 with row2
+                            final ArrayList<Row> resultRows2 = row1.map(r1 -> index2.getValues().getOrDefault(Relations.extractRow(rel1, r1, index2), EMPTY)).orElse(EMPTY);
                             // add row2 to index2
-                            if (row2 != null) {
-                                index2.addIndexRow(row2);
-                            }
+                            row2.ifPresent(index2::addIndexRow);
 
-                            // create results
+                            // Create results
                             results.clear();
                             results.ensureCapacity(resultRows1.size() + resultRows2.size());
-                            resultRows1.forEach(r1 -> results.add(Relations.mergeRows(rel1, r1, rel2, row2, outRelMetadata)));
-                            resultRows2.forEach(r2 -> results.add(Relations.mergeRows(rel2, r2, rel1, row1, outRelMetadata)));
+                            row2.ifPresent(r2 -> resultRows1.forEach(r1 -> results.add(Relations.mergeRows(rel1, r1, rel2, r2, outRelMetadata))));
+                            row1.ifPresent(r1 -> resultRows2.forEach(r2 -> results.add(Relations.mergeRows(rel2, r2, rel1, r1, outRelMetadata))));
                             resultsIterator = results.iterator();
                         }
                         return hasResults();
