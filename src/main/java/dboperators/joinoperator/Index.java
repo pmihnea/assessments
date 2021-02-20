@@ -19,7 +19,7 @@ public class Index extends RelationMetadata {
         super(columns);
         this.relation = relation;
         this.values = new HashMap<>();
-        initValues();
+        addIndexRows();
     }
 
     public Relation getRelation() {
@@ -30,12 +30,17 @@ public class Index extends RelationMetadata {
         return values;
     }
 
-    private void initValues() {
+    private void addIndexRows() {
         for (Row relationRow : relation.getRows()) {
-            final Row indexRow = Relations.extractRow(relation, relationRow, this);
-            ArrayList<Row> existingRelationRows = values.computeIfAbsent(indexRow, k -> new ArrayList<>());
-            existingRelationRows.add(relationRow);
+            addIndexRow(relationRow);
         }
+    }
+
+    public ArrayList<Row> addIndexRow(Row relationRow) {
+        final Row indexRow = Relations.extractRow(relation, relationRow, this);
+        ArrayList<Row> existingRelationRows = values.computeIfAbsent(indexRow, k -> new ArrayList<>());
+        existingRelationRows.add(relationRow);
+        return existingRelationRows;
     }
 
     @Override

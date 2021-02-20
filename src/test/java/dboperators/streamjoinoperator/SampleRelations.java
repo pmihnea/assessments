@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class SampleRelations {
 
-    public static final long MAX_RELATION_SIZE = 1L << 20;
+    public static final long MAX_RELATION_SIZE = 1L << 18;
 
     public static StreamRelation getRelationXY() {
         final Stream<Row> rows = LongStream.range(0L, MAX_RELATION_SIZE)
@@ -20,7 +20,7 @@ public class SampleRelations {
                         Row.of("x" + (i + MAX_RELATION_SIZE / 3) % MAX_RELATION_SIZE, "y" + i + 1),
                         Row.of("x" + (i + MAX_RELATION_SIZE / 5) % MAX_RELATION_SIZE, "y" + i + 2)
                 )).flatMap(Function.identity());
-        final StreamRelation r1 = StreamRelation.of(rows, SampleColumns.X, SampleColumns.Y);
+        final StreamRelation r1 = StreamRelation.of(getRowStream(rows), SampleColumns.X, SampleColumns.Y);
         r1.setEstimatedRowsCount(Optional.of(MAX_RELATION_SIZE * 3));
         return r1;
     }
@@ -33,8 +33,13 @@ public class SampleRelations {
                         Row.of("x" + i + MAX_RELATION_SIZE, "z" + i),
                         Row.of("x" + i + 2 * MAX_RELATION_SIZE, "z" + i)
                         )).flatMap(Function.identity());
-        final StreamRelation r2 = StreamRelation.of(rows, SampleColumns.X, SampleColumns.Z);
+        final StreamRelation r2 = StreamRelation.of(getRowStream(rows), SampleColumns.X, SampleColumns.Z);
         r2.setEstimatedRowsCount(Optional.of((MAX_RELATION_SIZE + 2) / 3 * 3));
         return r2;
+    }
+
+    private static Stream<Row> getRowStream(Stream<Row> rows) {
+        return rows;
+        //return rows.collect(Collectors.toList()).parallelStream();
     }
 }
